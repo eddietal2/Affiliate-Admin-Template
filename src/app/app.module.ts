@@ -16,7 +16,6 @@ export function jwtOptionsFactory(storage) {
   };
 }
 
-
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';

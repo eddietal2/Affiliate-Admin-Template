@@ -1,5 +1,11 @@
 #menu-list-wrapper {
     --side-max-width: 300px;
+
+    #menu {
+        border: none;
+        --background: #373737;
+
+    }
     
     ion-list {
         background: none;
@@ -15,7 +21,7 @@
     padding: 2em;
     border-radius: 5px;
     width: 400px;
-    margin: auto auto;
+    margin: 8% auto;
 
     @media screen {
         

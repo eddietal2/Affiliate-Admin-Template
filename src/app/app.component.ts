@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // State for the User. If Authentication State == False, the app reverts back to the landing page
     this.loginService.authenticationState.subscribe(async state => {
       if(state) {
-        this.router.navigate(['products']);
+        this.router.navigate(['landing-page']);
       }
       else {
         this.router.navigate(['']);
@@ -189,7 +189,6 @@ async loginSuccess(data) {
 
   this.authenticationState.next(true);
   this.loginModalOpen = false;
-  this.router.navigateByUrl('/products');
 
   // console.log(data);
   

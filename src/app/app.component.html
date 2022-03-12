@@ -1,16 +1,20 @@
 <ion-app>
-  <ion-split-pane style="width: 1200px;" id="menu-list-wrapper" contentId="main">
-    <!--  the side menu  -->
+  <ion-split-pane id="menu-list-wrapper" contentId="main">
+
+    <!-- Side Menu -->
     <ion-menu id="menu" contentId="main">
       <ion-row class="ion-justify-content-center">
         <ion-col size="11">
           <ion-list>
-            <ion-item>
-              <ion-label>Logo</ion-label>
+            <ion-item lines="none">
+              <ion-label slot="end">Logo</ion-label>
             </ion-item>
             <div style="margin-top: 100px;"></div>
             <ion-item lines="none">
               <a routerLink="/products" routerLinkActive="active-link" slot="end">Products</a>
+            </ion-item>
+            <ion-item lines="none">
+              <a routerLink="/landing-page" routerLinkActive="active-link" slot="end">Landing Page</a>
             </ion-item>
             <ion-item lines="none">
               <a routerLink="/users" routerLinkActive="active-link" slot="end">Users</a>
@@ -29,12 +33,13 @@
       </ion-row>
     </ion-menu>
   
-    <!-- the main content -->
+    <!-- Main Content -->
     <ion-router-outlet id="main"></ion-router-outlet>
   </ion-split-pane>
   
 
-<!-- Card Modal -->
+<!-- Admin Login Modal -->
+<!-- Displays over Main Content in IonRouter -->
 <ion-modal
   [isOpen]="!this.authenticationState.value"
   [swipeToClose]="true"

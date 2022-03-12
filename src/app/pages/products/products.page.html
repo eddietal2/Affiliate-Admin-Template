@@ -40,6 +40,7 @@
       </ion-toolbar>
     </ion-buttons>
 
+    <!-- Add Product -->
     <ion-buttons slot="end">
       <ion-button id="add-product-button" (click)="openAddProductModal()">
         <ion-icon slot="start" name="add"></ion-icon>
@@ -76,6 +77,7 @@
 
         <!-- Date Posted -->
         <ion-buttons slot="end">
+          <p>{{product.apiID}} <span class="hr-spacer-3x"></span></p>
           <p class="date-posted">Posted: {{product.datePosted}} ago</p>
         </ion-buttons>
       </ion-item>
