@@ -1,0 +1,286 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-title>Products ~ {{this.allProducts.length}}</ion-title>
+    </ion-buttons>
+
+    <!-- Filter -->
+    <ion-buttons slot="start">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button 
+            [ngClass]="this.filterOption == 'date' ? 'active-filter-button' : 'filter-button' " 
+            (click)="filterByDate()">
+            Date
+            <ion-icon *ngIf="this.filterDateAsc" slot="start" name="arrow-up-outline"></ion-icon>
+            <ion-icon *ngIf="this.filterDateDes" slot="start" name="arrow-down-outline"></ion-icon>
+          </ion-button>
+          <ion-button 
+            [ngClass]="this.filterOption == 'name' ? 'active-filter-button' : 'filter-button' " 
+            (click)="filterByName()">
+            Name
+            <ion-icon *ngIf="this.filterNameAsc" slot="start" name="arrow-up-outline"></ion-icon>
+            <ion-icon *ngIf="this.filterNameDes" slot="start" name="arrow-down-outline"></ion-icon>
+          </ion-button>
+          <ion-button 
+            [ngClass]="this.filterOption == 'price' ? 'active-filter-button' : 'filter-button' " 
+            (click)="filterByPrice()">
+            Price
+            <ion-icon *ngIf="this.filterPriceAsc" slot="start" name="arrow-up-outline"></ion-icon>
+            <ion-icon *ngIf="this.filterPriceDes" slot="start" name="arrow-down-outline"></ion-icon>
+          </ion-button>
+          <ion-button 
+            [ngClass]="this.filterOption == 'rating' ? 'active-filter-button' : 'filter-button' " 
+            (click)="filterByRating()">
+            Rating
+            <ion-icon *ngIf="this.filterRatingAsc" slot="start" name="arrow-up-outline"></ion-icon>
+            <ion-icon *ngIf="this.filterRatingDes" slot="start" name="arrow-down-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button id="add-product-button" (click)="openAddProductModal()">
+        <ion-icon slot="start" name="add"></ion-icon>
+        Add Product
+      </ion-button>
+      <span style="margin-right: 2em;"></span>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <!-- Products -->
+  <ion-accordion-group #productAccordianGroup>
+
+    <ion-accordion *ngFor="let product of allProducts" class="product-wrapper" value="{{product._id}}">
+      
+      <!-- Product List Item -->
+      <ion-item slot="header">
+
+        <!-- Price, Title, Rating, and Category -->
+        <ion-buttons slot="start">
+          <ion-label>
+            <p class="product-title">
+              <span class="product-price">${{product.price}}</span>
+              {{product.title}}</p>
+            <span class="product-category">#{{product.category}}</span>
+            <span class="hr-spacer-1x"></span>
+            <span *ngIf="product.rating > 0" class="product-rating">| Rating: {{product.rating}}</span>
+            <span *ngIf="product.rating == undefined || null" class="product-rating">| None</span>
+          </ion-label>
+        </ion-buttons>
+
+        <!-- Date Posted -->
+        <ion-buttons slot="end">
+          <p class="date-posted">Posted: {{product.datePosted}} ago</p>
+        </ion-buttons>
+      </ion-item>
+      
+      <ion-list slot="content">
+
+        <!-- Edit, Delete, and Close Product Buttons -->
+        <ion-item lines="none">
+          <ion-buttons slot="start">
+            <ion-button 
+              (click)="openEditProductModal(
+                product._id, 
+                product.apiID, 
+                product.title,
+                product.duration,
+                product.sample,
+                product.category,
+                product.price,
+                product.description)"
+              class="edit-product-button">
+              Edit
+            </ion-button>
+
+            <ion-button (click)="tryDeleteProduct(product._id)" class="delete-product-button">
+            Delete
+            </ion-button>
+          </ion-buttons>
+
+          <ion-buttons slot="end">
+            <ion-button class="close-button" 
+              (click)="closeProduct(productAccordianGroup)">
+                Close
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+
+        <div style="border-top: 1px solid #999;"></div>
+
+        <!-- Ratings, Reviews, and Duration -->
+        <ion-item lines="none">
+          <ion-label>
+            <h2 style="font-weight: 500;">
+              Rating
+            </h2>
+            <p *ngIf="product.rating > 0" class="product-rating">{{product.rating}}</p>
+            <p *ngIf="product.rating == undefined || null" class="product-rating">None</p>
+          </ion-label>
+          <ion-label>
+            <h2 style="font-weight: 500;">
+              Reviews
+            </h2>
+            <p class="product-rating">{{product.reviews.length}}</p>
+          </ion-label>
+          <ion-label>
+            <h2 style="font-weight: 500;">
+              Duration
+            </h2>
+            <p class="product-rating">{{product.duration}}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- API ID -->
+        <ion-item lines="none">
+          <p class="product-apiID">
+            <span style="font-weight: 500;">API ID -</span>
+            {{product.apiID}}</p>
+        </ion-item>
+
+        <!-- Description Header -->
+        <ion-item lines="none">
+          <ion-label>
+            Description
+            <p class="product-description">{{product.description}}</p>
+          </ion-label>
+        </ion-item>
+
+        <!-- Sample -->
+        <ion-item lines="none">
+          <ion-label>
+            <h2>Sample</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div class="sample-wrapper"></div>
+        </ion-item>
+
+        <div class="spacer-5x"></div>
+        <div style="border-top: 1px solid #999;"></div>
+      </ion-list>
+
+
+      <!-- Edit Product Modal -->
+      <ion-modal [backdropDismiss]="false" [isOpen]="product.isOpen">
+        <ng-template>
+          <form [formGroup]="editProductForm" (ngSubmit)="tryEditProduct(product._id)">
+            <ion-item>
+              <ion-label>Edit Product</ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Title <ion-text color="danger">*</ion-text></ion-label>
+                <ion-input required formControlName="title" type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">API ID <ion-text color="danger">*</ion-text></ion-label>
+              <ion-input required formControlName="apiID" placeholder="Example: CBKS452" type="text" maxLength="7" minLength="7"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Category</ion-label>
+                <ion-select 
+                  required 
+                  (ionChange)="changeCategory($event)" 
+                  formControlName="category" 
+                  placeholder="Select A Category">
+                    <ion-select-option value="sleep">Sleep</ion-select-option>
+                    <ion-select-option value="relationships">Relationships</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Price</ion-label>
+              <ion-input required formControlName="price" type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Audio Duration (in minutes)</ion-label>
+              <ion-input required formControlName="duration" type="number"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Audio Sample</ion-label>
+              <ion-input required formControlName="sample" type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-textarea required formControlName="description" placeholder="Add Description here:" rows="4"></ion-textarea>
+            </ion-item>
+
+            <ion-item>
+              <div class="ion-text-center">
+                <ion-button class="edit-product-modal-button" color="success" type="submit" [disabled]="editProductForm.invalid">
+                  Edit
+                </ion-button>
+                <ion-button class="edit-product-modal-button" color="danger">
+                  Delete
+                </ion-button>
+              </div>
+            </ion-item>
+          </form>
+          <ion-button class="modal-close-button" (click)="closeEditProductModal(product._id)">
+            Close
+          </ion-button>
+        </ng-template>
+      </ion-modal>
+
+    </ion-accordion>
+  </ion-accordion-group>
+
+</ion-content>
+
+<!-- Add Product Modal -->
+<ion-modal [backdropDismiss]="false" [isOpen]="addProductModal">
+  <ng-template>
+      <form [formGroup]="addProductForm" (ngSubmit)="tryAddProduct()">
+        <ion-item>
+          <h1>Add Product</h1>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Title <ion-text color="danger">*</ion-text></ion-label>
+            <ion-input required formControlName="title" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">API ID <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required formControlName="apiID" placeholder="Example: CBKS452" type="text" maxLength="9" minLength="9"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Category</ion-label>
+            <ion-select 
+              required 
+              (ionChange)="changeCategory($event)" 
+              formControlName="category" 
+              placeholder="Select A Category">
+                <ion-select-option value="sleep">Sleep</ion-select-option>
+                <ion-select-option value="relationships">Relationships</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Price</ion-label>
+          <ion-input required formControlName="price" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Audio Duration (in minutes)</ion-label>
+          <ion-input required formControlName="duration" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Audio Sample</ion-label>
+          <ion-input required formControlName="sample" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-textarea required formControlName="description" placeholder="Add Description here:" rows="4"></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-button color="success" class="add-product-modal-button" type="submit" [disabled]="addProductForm.invalid">
+              Add
+          </ion-button>
+          <ion-button class="add-product-modal-button" (click)="closeAddProductModal()">
+              Close
+          </ion-button>
+        </ion-item>
+      </form>
+  </ng-template>
+</ion-modal>

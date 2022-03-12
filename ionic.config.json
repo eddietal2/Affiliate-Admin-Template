@@ -1,0 +1,7 @@
+{
+  "name": "Affiliate-Admin-Template",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

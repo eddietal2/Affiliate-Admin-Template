@@ -1,0 +1,74 @@
+<ion-app>
+  <ion-split-pane style="width: 1200px;" id="menu-list-wrapper" contentId="main">
+    <!--  the side menu  -->
+    <ion-menu id="menu" contentId="main">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="11">
+          <ion-list>
+            <ion-item>
+              <ion-label>Logo</ion-label>
+            </ion-item>
+            <div style="margin-top: 100px;"></div>
+            <ion-item lines="none">
+              <a routerLink="/products" routerLinkActive="active-link" slot="end">Products</a>
+            </ion-item>
+            <ion-item lines="none">
+              <a routerLink="/users" routerLinkActive="active-link" slot="end">Users</a>
+            </ion-item>
+            <ion-item lines="none">
+              <a routerLink="/reports" routerLinkActive="active-link" slot="end">Reports</a>
+            </ion-item>
+            <ion-item lines="none">
+              <a routerLink="/settings" routerLinkActive="active-link" slot="end">Settings</a>
+            </ion-item>
+            <ion-item (click)="tryLogout()" lines="none">
+              <a id="logout-link" slot="end">Logout</a>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-menu>
+  
+    <!-- the main content -->
+    <ion-router-outlet id="main"></ion-router-outlet>
+  </ion-split-pane>
+  
+
+<!-- Card Modal -->
+<ion-modal
+  [isOpen]="!this.authenticationState.value"
+  [swipeToClose]="true"
+  id="login-modal"
+>
+  <ng-template>
+    <div id="login-wrapper">
+      <img src="../assets/icon/favicon.png" alt="" srcset="">
+      <h1>Admin Login</h1>
+      <div class="spacer-2x"></div>
+      <form [formGroup]="loginForm" (ngSubmit)="tryLogin()">
+        <ion-item>
+          <ion-label position="floating">Username <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required formControlName="username" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Password <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required formControlName="password" type="password"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-checkbox (ionChange)="stayLoggedIn($event)"></ion-checkbox>
+          <span class="hr-spacer-1x"></span>
+          <ion-label>Stay Logged In?</ion-label>
+        </ion-item>
+        <div class="spacer-2x"></div>
+        <div class="ion-text-center">
+          <ion-button color="primary" type="submit" [disabled]="loginForm.invalid">
+            Login
+          </ion-button>
+        </div>
+      </form>
+
+    </div>
+  </ng-template>
+</ion-modal>
+</ion-app>
+

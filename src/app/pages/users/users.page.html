@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Users ~ {{this.allUsers.length}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-accordion-group #userAccordianGroup>
+    <ion-accordion *ngFor="let user of allUsers" class="user-wrapper" value="{{user._id}}">
+    <ion-item slot="header">
+      <ion-label>
+        <p class="user-name">{{user.fullName}}</p>
+        <p class="user-email">{{user.email}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-list slot="content">
+      <ion-item>
+        <ion-label>
+          <h2>Reviews</h2>
+          <p class="product-rating">{{user.reviews.length}}</p>
+        </ion-label>
+        <ion-label>
+          <h2>Date Registered</h2>
+          <p class="product-rating">{{user.dateRegistered}}</p>
+        </ion-label>
+        <!-- <ion-label>
+          <h2>Products Bought?</h2>
+          <p class="product-rating">{{product.productsBought.length}}</p>
+        </ion-label> -->
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="tryDeleteUser(user._id)" color="danger" class="edit-product-button">
+          Delete
+        </ion-button>
+        <ion-button (click)="tryCloseUser(userAccordianGroup)" color="dark" class="edit-product-button">
+          Close
+        </ion-button>
+      </ion-item>
+    </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>

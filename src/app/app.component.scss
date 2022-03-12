@@ -1,0 +1,40 @@
+#menu-list-wrapper {
+    --side-max-width: 300px;
+    
+    ion-list {
+        background: none;
+
+        ion-item {
+            --background: none;
+        }
+    }
+}
+
+#login-wrapper {
+    background: #dedede41;
+    padding: 2em;
+    border-radius: 5px;
+    width: 400px;
+    margin: auto auto;
+
+    @media screen {
+        
+    }
+}
+
+#login-modal {
+    --min-height: 100vh;
+    --min-width: 100vw;
+}
+
+a {
+    color: #999;
+    text-decoration: none;
+    padding-left: 8px;
+    transition: 0.5s;
+}
+
+.active-link {
+    color: #00c400;
+    border-left: 5px solid #00c400;
+}

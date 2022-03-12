@@ -1,0 +1,29 @@
+<ion-content>
+  <ion-grid>
+  <div class="spacer-10x"></div>
+  <ion-row class="ion-justify-content-center">
+    <ion-col id="login-wrapper" size="5">
+      <div class="ion-text-center">
+        <h1>Affiliate Site Login</h1>
+      </div>
+      <div class="spacer-2x"></div>
+      <form [formGroup]="loginForm" (ngSubmit)="tryLogin()">
+        <ion-item>
+          <ion-label position="floating">Username <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required formControlName="username" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Password <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required formControlName="password" type="password"></ion-input>
+        </ion-item>
+        <div class="spacer-2x"></div>
+        <div class="ion-text-center">
+          <ion-button block color="primary" type="submit" [disabled]="loginForm.invalid">
+            Login
+          </ion-button>
+        </div>
+      </form>
+    </ion-col>
+  </ion-row>
+  </ion-grid>
+</ion-content>
