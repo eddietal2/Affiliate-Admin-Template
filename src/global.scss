@@ -63,6 +63,7 @@
 }
 
 
+// Loding
 .login-loading {
     --background: green;
     --min-height: 200vh;
@@ -70,8 +71,27 @@
     color: white;
 }
 
+// Ion Alert Classes
+.edit-landing-page-alert {
+    --max-width: 500px;
+
+    .alert-wrapper {
+        border: 3px solid #242424;
+    }
+
+    .confirm-button {
+        color: #ff7272;
+    }
+}
+
+
+// Ion Elements
 ion-header {
     ion-toolbar {
         --background: #535353;
     }
+}
+
+ion-button {
+    // transition: 0.5s;
 }

@@ -7,6 +7,35 @@ ion-item {
     margin-bottom: 1em;
 
     .landing-page-label {
-        color: #319bff;
+        color: #00c400;
     }
 }
+
+ion-textarea {
+    background: #222;
+    color: #dedede;
+    max-width: 800px;
+    padding: 0.6em;
+}
+
+
+.landing-page-edit-button {
+    display: inline-block;
+    height: 24px;
+    width: 50px;
+    margin-left: 2px;
+    position: relative;
+    top: -7px;
+}
+
+.active-edit {
+    --background: #00c400;
+}
+.inactive-edit {
+    --background: #999;
+}
+
+.close-button {
+    --background: #999;
+}
+
