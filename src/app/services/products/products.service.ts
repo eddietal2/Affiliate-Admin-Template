@@ -60,10 +60,26 @@ export class ProductsService {
 
     /**
      * Delete a Product
-     * @returns 
+     * @returns Observable
      */
     deleteProduct(id: string) {
       return this.http.post(`${this.BACKEND_URL}/products/delete-product`, {id: id})
+    }
+
+    /**
+     * Feature a Product
+     * @returns Observable
+     */
+    featureProduct(id: string) {
+      return this.http.post(`${this.BACKEND_URL}/products/feature-product`, {_id: id})
+    }
+
+    /**
+     * Unfeature a Product
+     * @returns Observable
+     */
+    unfeatureProduct(id: string) {
+      return this.http.post(`${this.BACKEND_URL}/products/unfeature-product`, {_id: id})
     }
 
   }

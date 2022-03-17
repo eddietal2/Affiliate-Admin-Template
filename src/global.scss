@@ -71,6 +71,18 @@
     color: white;
 }
 
+// Toast
+.success-toast {
+    --background: #02b10a;
+    --color: #fff;
+    font-size: 1.2em;
+}
+.danger-toast {
+    --background: rgb(255, 81, 81);
+    --color: #fff;
+    font-size: 1.2em;
+}
+
 // Ion Alert Classes
 .edit-landing-page-alert {
     --max-width: 500px;

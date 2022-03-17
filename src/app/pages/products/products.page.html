@@ -77,7 +77,7 @@
 
         <!-- Date Posted -->
         <ion-buttons slot="end">
-          <p>{{product.apiID}} <span class="hr-spacer-3x"></span></p>
+          <p style="width: 200px;">API ID: {{product.apiID}} <span class="hr-spacer-3x"></span></p>
           <p class="date-posted">Posted: {{product.datePosted}} ago</p>
         </ion-buttons>
       </ion-item>
@@ -104,6 +104,10 @@
             <ion-button (click)="tryDeleteProduct(product._id)" class="delete-product-button">
             Delete
             </ion-button>
+
+            <span style="margin-left: 8px;">Featured?</span>
+            <ion-toggle *ngIf="!product.featured" (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
+            <ion-toggle *ngIf="product.featured" checked (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
           </ion-buttons>
 
           <ion-buttons slot="end">

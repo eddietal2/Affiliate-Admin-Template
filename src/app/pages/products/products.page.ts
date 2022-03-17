@@ -1,8 +1,8 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, IonAccordionGroup , LoadingController} from '@ionic/angular';
+import { AlertController, IonAccordionGroup , LoadingController, ToastController} from '@ionic/angular';
 import { formatDistance } from 'date-fns';
 
 @Component({
@@ -10,7 +10,7 @@ import { formatDistance } from 'date-fns';
   templateUrl: './products.page.html',
   styleUrls: ['./products.page.scss'],
 })
-export class ProductsPage implements OnInit {
+export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
   allProducts$ = new BehaviorSubject([]);
   allProducts = [];
 
@@ -20,13 +20,26 @@ export class ProductsPage implements OnInit {
     private productsService: ProductsService,
     private alertController: AlertController,
     private loadingController: LoadingController,
+    public toastController: ToastController
   ) { }
+
+  ngAfterViewInit() {
+
+   
+  }
 
   ngOnInit() {
     this.createFormGroups();
     this.getAllProducts();
+    this.checkToggled();
 
   }
+
+  @HostListener('unloaded')
+  ngOnDestroy() {
+    console.log('Products Page destroyed');
+  }
+
 
   /**
    * Initialize Forms
@@ -64,19 +77,24 @@ export class ProductsPage implements OnInit {
   getAllProducts() {
     this.productsService.getAllProducts()
       .subscribe(products => {
-        this.allProducts$.next(Object.values(products));
 
-        this.allProducts$.subscribe( products => {
-          products.forEach((product) => {
-            // For each individual modal
+        // Set initial value for All Products BehaviorSubject
+        this.allProducts$.next(Object.values(products));
+        this.allProducts$.subscribe( async products => {
+
+          // Format Product Dates
+          await products.forEach((product) => {
             product.datePosted = formatDistance(
               product.datePosted,
               Date.now()
             )
-            product.isOpen = false;
-          })
 
-          this.allProducts = products.reverse();
+            // Add isOpen property for modals.
+            product.isOpen = false;
+          });
+
+          // Reverse to set most recently added Products to top
+          this.allProducts = await products.reverse();
         })
       })
 
@@ -439,9 +457,51 @@ export class ProductsPage implements OnInit {
 
    }
   
-  @HostListener('unloaded')
-  ngOnDestroy() {
-    console.log('Products Page destroyed');
+  toggleFeatured(e, id) {
+    let eventDetail = e.detail.checked;
+
+    // Set Product to Featured
+    if(eventDetail) {
+      console.log('Featured.');
+      this.productsService.featureProduct(id)
+        .subscribe(async res => {
+          const toast = await this.toastController.create({
+            cssClass: 'success-toast',
+            position: 'top',
+            message: 'Product has been Featured.',
+            duration: 2000
+        });
+        toast.present();
+        });
+      
+    }
+
+    // Set Product to Unfeatured
+    if(!eventDetail) {
+      console.log('Unfeatured.');
+      this.productsService.unfeatureProduct(id)
+        .subscribe(async res => {
+          const toast = await this.toastController.create({
+            cssClass: 'danger-toast',
+            position: 'top',
+            message: 'Product has been Unfeatured.',
+            duration: 2000
+          });
+          toast.present();
+        });
+      
+    }
+
+    console.log(eventDetail);
+    console.log(id);
+  }
+
+  checkToggled() {
+    this.allProducts.forEach(product => {
+      console.log(product.featured + ' / ' + product.title);
+      
+    });
+    
   }
 
 }
