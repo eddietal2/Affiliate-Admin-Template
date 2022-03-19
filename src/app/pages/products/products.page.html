@@ -70,14 +70,14 @@
               {{product.title}}</p>
             <span class="product-category">#{{product.category}}</span>
             <span class="hr-spacer-1x"></span>
-            <span *ngIf="product.rating > 0" class="product-rating">| Rating: {{product.rating}}</span>
+            <!-- <app-ratings-stars *ngIf="product.rating > 0" [rating]="product.rating"></app-ratings-stars> -->
             <span *ngIf="product.rating == undefined || null" class="product-rating">| None</span>
           </ion-label>
         </ion-buttons>
 
         <!-- Date Posted -->
         <ion-buttons slot="end">
-          <p style="width: 200px;">API ID: {{product.apiID}} <span class="hr-spacer-3x"></span></p>
+          <p style="width: 200px;">{{product.apiID}} <span class="hr-spacer-3x"></span></p>
           <p class="date-posted">Posted: {{product.datePosted}} ago</p>
         </ion-buttons>
       </ion-item>

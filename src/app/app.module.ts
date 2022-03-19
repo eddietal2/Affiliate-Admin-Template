@@ -6,6 +6,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { CustomComponentsModule } from './components/custom-components.module';
+
 // For JWT
 export function jwtOptionsFactory(storage) {
   return {
@@ -16,17 +21,13 @@ export function jwtOptionsFactory(storage) {
   };
 }
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
     HttpClientModule,
+    CustomComponentsModule,
     FormsModule,
     ReactiveFormsModule,
     IonicModule.forRoot(), 
