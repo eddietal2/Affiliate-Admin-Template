@@ -38,7 +38,7 @@ export class LandingPagePage implements OnInit {
 
   getLandingPageInfoSub: Subscription;
   landingPageInfo: LandingPageInfo;
-  landingPageInfo$ = new BehaviorSubject([]);
+  landingPageInfo$ = new BehaviorSubject(null);
   id: string;
 
   /**
@@ -206,9 +206,8 @@ export class LandingPagePage implements OnInit {
    * @param input 
    * @param button 
    */
-  async cancelEditSample(input, button) {
+  async cancelEditSample(input) {
     console.log(input);
-    console.log(button);
     input.value = this.landingPageInfo$.value['sampleTrack'];
     setTimeout(() => {
      this.disableSampleInput = false;

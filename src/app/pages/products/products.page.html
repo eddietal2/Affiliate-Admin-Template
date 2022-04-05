@@ -87,6 +87,10 @@
         <!-- Edit, Delete, and Close Product Buttons -->
         <ion-item lines="none">
           <ion-buttons slot="start">
+            <ion-button class="close-button" 
+              (click)="closeProduct(productAccordianGroup)">
+                Close
+            </ion-button>
             <ion-button 
               (click)="openEditProductModal(
                 product._id, 
@@ -104,50 +108,67 @@
             <ion-button (click)="tryDeleteProduct(product._id)" class="delete-product-button">
             Delete
             </ion-button>
+            <span style="margin-left: 8px; font-size: 1.3em;">   | Featured?</span>
+            <ion-toggle *ngIf="!product.featured" (ionChange)="toggleFeatured($event, product._id)"></ion-toggle>
+            <ion-toggle *ngIf="product.featured" checked (ionChange)="toggleFeatured($event, product._id)"></ion-toggle>
 
-            <span style="margin-left: 8px;">Featured?</span>
-            <ion-toggle *ngIf="!product.featured" (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
-            <ion-toggle *ngIf="product.featured" checked (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
+            
           </ion-buttons>
 
           <ion-buttons slot="end">
-            <ion-button class="close-button" 
-              (click)="closeProduct(productAccordianGroup)">
-                Close
-            </ion-button>
           </ion-buttons>
         </ion-item>
 
-        <div style="border-top: 1px solid #999;"></div>
+
+        <!-- Sample Player -->
+        <ion-row>
+          <ion-col size-xs="12" size-lg="6" id="landing-sample-player-wrapper">
+              <ion-row>
+                  <ion-col size="0.75">
+                  </ion-col>
+                  <ion-col size-xs="1.5" size-lg="0.5" class="ion-text-center">
+                      <ion-icon #musicIcon class="landing-sample-music-icon" name="musical-notes-outline"></ion-icon>
+                  </ion-col>
+                  <ion-col size-xs="9.5" size-lg="8.5">
+                      <div style="padding: 0em 2em; position: relative; bottom: 21px;">
+                          <p id="sample-track-text">Sample Track</p>
+                          <ion-progress-bar id="sample-track-progress-bar" value="{{product.sampleDuration}}" #sampleMusicProgress></ion-progress-bar>
+                      </div>
+                  </ion-col>
+                  <ion-col size-xs="1" size-lg="1" class="ion-text-center">
+                      <!-- Play Sample Button -->
+                      <ion-button id="landing-sample-button" (click)="playSample(product, musicIcon)">
+                          <ion-icon style="position: relative; left: 8px;" 
+                            slot="start" size="large" name="{{product.buttonIcon}}" ></ion-icon>
+                      </ion-button>
+                  </ion-col>
+              </ion-row>
+          </ion-col>
+        </ion-row>
 
         <!-- Ratings, Reviews, and Duration -->
         <ion-item lines="none">
           <ion-label>
-            <h2 style="font-weight: 500;">
-              Rating
-            </h2>
-            <p *ngIf="product.rating > 0" class="product-rating">{{product.rating}}</p>
-            <p *ngIf="product.rating == undefined || null" class="product-rating">None</p>
+            <h2 class="product-info-wrapper">
+              API ID - {{product.apiID}}</h2>
           </ion-label>
           <ion-label>
-            <h2 style="font-weight: 500;">
-              Reviews
+            <h2 *ngIf="product.rating > 0" class="product-info-wrapper" style="font-weight: 500;">
+              Rating - {{product.rating}}
             </h2>
-            <p class="product-rating">{{product.reviews.length}}</p>
+            <h2 *ngIf="product.rating == 0" class="product-info-wrapper">
+              Rating - {{product.rating}}</h2>
           </ion-label>
           <ion-label>
-            <h2 style="font-weight: 500;">
-              Duration
+            <h2 class="product-info-wrapper">
+              Reviews - {{product.reviews.length}}
             </h2>
-            <p class="product-rating">{{product.duration}}</p>
           </ion-label>
-        </ion-item>
-
-        <!-- API ID -->
-        <ion-item lines="none">
-          <p class="product-apiID">
-            <span style="font-weight: 500;">API ID -</span>
-            {{product.apiID}}</p>
+          <ion-label>
+            <h2 class="product-info-wrapper">
+              Duration - {{product.duration}}
+            </h2>
+          </ion-label>
         </ion-item>
 
         <!-- Description Header -->
@@ -156,17 +177,6 @@
             Description
             <p class="product-description">{{product.description}}</p>
           </ion-label>
-        </ion-item>
-
-        <!-- Sample -->
-        <ion-item lines="none">
-          <ion-label>
-            <h2>Sample</h2>
-          </ion-label>
-        </ion-item>
-
-        <ion-item>
-          <div class="sample-wrapper"></div>
         </ion-item>
 
         <div class="spacer-5x"></div>

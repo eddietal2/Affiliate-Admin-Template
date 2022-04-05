@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="506px" height="476px" viewBox="0 0 506 476" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>logo_draft_1</title>
+    <g id="logo_draft_1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(47.000000, 39.000000)" fill="#04AF10">
+            <path d="M0,0 L356,0 C386.375661,-5.57991845e-15 411,24.6243388 411,55 L411,85 L411,85 L205.5,67.4978728 L59.6673704,79.9182194 C29.401281,82.4959369 2.77611484,60.0500766 0.198397345,29.7839872 C0.066192141,28.231709 -6.9146399e-15,26.6745146 0,25.1166168 L0,0 L0,0 Z" id="Path-3-Copy"></path>
+            <path d="M58,189 L225.99152,189 L347.5,189 C370.972102,189 390,208.027898 390,231.5 C390,254.972102 370.972102,274 347.5,274 L223.87878,274 L223.87878,274 L58,274 L58,189 Z" id="Path-3-Copy-2" transform="translate(224.000000, 231.500000) rotate(90.000000) translate(-224.000000, -231.500000) "></path>
+        </g>
+    </g>
+</svg>

@@ -4,6 +4,7 @@ import { ProductsService } from 'src/app/services/products/products.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, IonAccordionGroup , LoadingController, ToastController} from '@ionic/angular';
 import { formatDistance } from 'date-fns';
+import {Howl, Howler} from 'howler';
 
 
 @Component({
@@ -92,6 +93,19 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
 
             // Add isOpen property for modals.
             product.isOpen = false;
+
+            // Add Product Sample Icon for each product
+            product.buttonIcon = 'play';
+
+            // For Pause / Play Toggle
+            product.sampleToggle = false;
+
+            // Convert Sample time to 0 - 1 duration
+            product.sampleDuration = 0;
+
+            // Capture sample location when paused
+            product.trackDuration = 0;
+
           });
 
           // Reverse to set most recently added Products to top
@@ -504,5 +518,93 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
     });
     
   }
+
+ 
+
+  playSample(product, musicIcon) {
+
+    let timeInterval = null;
+    let newTimer = false;
+    let sound = new Howl({
+       html5: true,
+       src: product.sample,
+       sprite: {
+         sample: [19000, 25000]
+       },
+     });
+  
+    if(!newTimer) {
+
+      newTimer = true;
+      timeInterval = setInterval(() => {
+
+        function updateSampleTime(sound, callback) {
+          if (sound.playing()) {
+            let width = (sound.seek()/sound.duration());
+            console.log('Seek: ' + sound.seek());            
+            return callback(sound.duration());
+          }
+        }
+
+        // Fires every interval to update sample time and UI
+        updateSampleTime(sound, (trackDuration) => {
+
+          product.sampleDuration = product.sampleDuration + 0.005;
+          product.trackDuration = trackDuration;
+  
+          // If Time is stop in the middle of Playing.
+          if(product.sampleToggle == false) {
+            sound.pause();
+            product.sampleDuration = 0;
+            clearInterval(timeInterval);
+            return;
+          }
+          
+          // When sample is finished playing, change sample button to
+          // refresh, change UI timer to 0, stop progress bar animation,
+          // unload song, and stop Interval timer.
+          if(product.sampleDuration >= 1) {
+            
+            product.sampleDuration = 1;
+            product.buttonIcon = 'refresh-outline'
+
+            clearInterval(timeInterval);
+            sound.stop();
+            return;
+          }
+        }); 
+      }, 100);
+
+    }
+
+    // Play
+    if(product.sampleToggle == false) {
+
+      product.sampleToggle = true;
+      musicIcon.el.style.color = '#ff9158';
+      musicIcon.el.style.transform = 'scale(1.25)';
+      sound.play('sample');
+
+      // Change Icon &
+      return product.buttonIcon = 'pause';
+    } 
+
+    // Pause
+    if(product.sampleToggle == true) {
+
+      product.sampleToggle = false;
+      product.trackDuration = sound.seek();
+      musicIcon.el.style.color = '#fff';
+      musicIcon.el.style.transform = 'scale(1)';
+      console.log(sound);
+      
+      sound.pause(sound);
+
+      return product.buttonIcon = 'play';
+      }    
+  }
+
+
+  
 
 }

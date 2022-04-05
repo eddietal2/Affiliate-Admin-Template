@@ -38,23 +38,26 @@
         padding-bottom: 1em;
     }
     .edit-product-button {
-        background: #1bdd8c;
-        color: #222;
+        background: #3880ff;
+        color: #fff;
         border-radius: 5px;
         margin-right: 0.5em;
         width: 80px;
+        height: 28px;
     }
     .delete-product-button {
-        border: 1px solid #f63f3f;
-        color: #f63f3f;
+        background: #f63f3f;
+        color: #fff;
         border-radius: 5px;
         width: 80px;
+        height: 28px;
     }
     .close-button {
-        border: 1px solid #999;
-        color: #999;
+        background: #999;
+        color: #fff;
         border-radius: 5px;
         width: 80px;
+        height: 28px;
     }
     .date-posted {
         font-size: 0.75em;
@@ -62,30 +65,79 @@
         width: 100px;
     }
     .product-title {
-        color: #bababa; 
+        color: #fff; 
         font-weight: 600;
     }
     .product-category {
-        color: #319bff; 
+        color: #bc9947; 
     }
     .product-rating {
-        color: #999; 
+        color: #fff; 
     }
     .product-price {
-        color: #099f09;
-        font-size: 1.4em;
+        color: #00c400;
+        margin-right: 8px;
+        font-size: 1.6em;
+        width: 51px;
+        display: inline-block;
     }
-    .product-apiID {
-        background: #00c4009a;
+    .product-info-wrapper {
+        background: #3a3a3a;
+        color: #fff;
         padding: 1em;
-        border-radius: 2px;
+        border-radius: 5px;
+        width: 200px;
     }
     .product-description {
         max-width: 800px;
+        font-size: 1.2em;
+        margin-top: 0.5em;
+        color: #fff;
+
     }
     .sample-wrapper {
         height: 100px;
         width: 800px;
         background: #555;
     }
+}
+.landing-sample-music-icon {
+    margin: 0 auto;
+    font-size: 2em;
+    color: #fff;
+}
+
+#landing-sample-player-wrapper {
+
+    background: #0d0d0d;
+    border-radius: 5px;
+    box-shadow: 1px 1px 8px #1f1d1d;
+    height: 80px;
+    padding-top: 16px;
+    z-index: 9;
+    margin: 1em 2em;
+
+
+    #landing-sample-music-icon {
+        margin: 0 auto;
+        font-size: 2em;
+        color: #fff;
+    }
+
+    #landing-sample-button {
+        --background: #00c400;
+        float: right;
+        --border-radius: 100px;
+        height: 50px;
+        width: 50px;
+        position: relative;
+        top: -10px;
+    }
+
+    #sample-track-text {
+        font-size: 1em;
+        padding-bottom: 0.3em;
+        color: #b4b4b4;
+    }
+
 }

@@ -53,14 +53,14 @@
             #editSampleButton
             [disabled]="!disableSampleInput"
             [ngClass]="disableSampleInput ? 'active-edit' : 'inactive-edit'"
-            (click)="editSample(sample, editSampleButton)">
+            (click)="editSample(sample)">
             Edit
           </ion-button>
           <ion-button
               #cancelEditSampleButton
               *ngIf="disableSampleInput"
               class="close-button"
-              (click)="cancelEditSample(sample, cancelEditSampleButton)">
+              (click)="cancelEditSample(sample)">
               <ion-icon name="close-outline"></ion-icon>
           </ion-button>
       </ion-item>
@@ -93,7 +93,7 @@
   </div>
   <ion-row class="ion-justify-content-center">
     <ion-col size="11" *ngIf="!whyHypnosisSpinner">
-      <h1>Why Hypnosis?
+      <h1>Description
         <ion-button 
           [disabled]="!disableWhyHypnosisInput"
           [ngClass]="disableWhyHypnosisInput ? 'active-edit' : 'inactive-edit'"
@@ -104,7 +104,7 @@
             #cancelEditWhyHypnosisButton
             *ngIf="disableWhyHypnosisInput"
             class="close-button"
-            (click)="cancelEditWhyHypnosis(whyHypnosisInput, cancelEditWhyHypnosisButton)">
+            (click)="cancelEditWhyHypnosis(whyHypnosisInput)">
             <ion-icon name="close-outline"></ion-icon>
         </ion-button>
       </h1>
@@ -135,7 +135,7 @@
             #cancelEditMembershipMessageButton
             *ngIf="disableMembershipMessageInput"
             class="close-button"
-            (click)="cancelEditMembershipMessage(membershipMessageInput, cancelEditMembershipMessageButton)">
+            (click)="cancelEditMembershipMessage(membershipMessageInput)">
             <ion-icon name="close-outline"></ion-icon>
         </ion-button></h1>
       <ion-textarea 
