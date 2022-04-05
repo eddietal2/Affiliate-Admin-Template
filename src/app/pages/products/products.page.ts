@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, IonAccordionGroup , LoadingController, ToastController} from '@ionic/angular';
 import { formatDistance } from 'date-fns';
 import {Howl, Howler} from 'howler';
+import { catchError } from 'rxjs/operators';
 
 
 @Component({
@@ -472,14 +473,29 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
 
    }
   
-  toggleFeatured(e, id) {
+  toggleFeatured(e: CustomEvent, id, toggleRef) {
+    console.log(e);
+    e.preventDefault();
+    
     let eventDetail = e.detail.checked;
 
     // Set Product to Featured
     if(eventDetail) {
       console.log('Featured.');
       this.productsService.featureProduct(id)
-        .subscribe(async res => {
+      .pipe(
+        catchError(e => {
+          if(e.error.msg = 'There are already 3 Featured Products') {
+            console.log(toggleRef);
+            toggleRef.el.checked = false;
+            this.errorToast(); 
+            
+          }
+          
+          throw new Error(e);
+        })
+      ) 
+      .subscribe(async res => {
           const toast = await this.toastController.create({
             cssClass: 'success-toast',
             position: 'top',
@@ -496,19 +512,22 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
       console.log('Unfeatured.');
       this.productsService.unfeatureProduct(id)
         .subscribe(async res => {
-          const toast = await this.toastController.create({
-            cssClass: 'danger-toast',
-            position: 'top',
-            message: 'Product has been Unfeatured.',
-            duration: 2000
-          });
-          toast.present();
+       
         });
       
     }
+  }
 
-    console.log(eventDetail);
-    console.log(id);
+
+
+  async errorToast() {
+    const toast = await this.toastController.create({
+      message: 'You can only have 3 Featured Products',
+      cssClass: 'danger-toast',
+      position: 'top',
+      duration: 2000
+    });
+    toast.present();
   }
 
   checkToggled() {

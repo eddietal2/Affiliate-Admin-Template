@@ -38,7 +38,7 @@ export class LandingPagePage implements OnInit {
 
   getLandingPageInfoSub: Subscription;
   landingPageInfo: LandingPageInfo;
-  landingPageInfo$ = new BehaviorSubject(null);
+  landingPageInfo$ = new BehaviorSubject(['']);
   id: string;
 
   /**

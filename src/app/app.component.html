@@ -47,8 +47,9 @@
 >
   <ng-template>
     <div id="login-wrapper">
-      <img src="../assets/icon/favicon.png" alt="" srcset="">
-      <h1>Admin Login</h1>
+      <div class="ion-text-center">
+        <img height="70" src="../assets/icons/logo_draft_1.svg" alt="" srcset="">
+      </div>
       <div class="spacer-2x"></div>
       <form [formGroup]="loginForm" (ngSubmit)="tryLogin()">
         <ion-item>

@@ -109,8 +109,8 @@
             Delete
             </ion-button>
             <span style="margin-left: 8px; font-size: 1.3em;">   | Featured?</span>
-            <ion-toggle *ngIf="!product.featured" (ionChange)="toggleFeatured($event, product._id)"></ion-toggle>
-            <ion-toggle *ngIf="product.featured" checked (ionChange)="toggleFeatured($event, product._id)"></ion-toggle>
+            <ion-toggle #toggleRef *ngIf="!product.featured" (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
+            <ion-toggle #toggleRef *ngIf="product.featured" checked (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
 
             
           </ion-buttons>
