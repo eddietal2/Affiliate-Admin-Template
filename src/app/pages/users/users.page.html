@@ -1,15 +1,68 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Users ~ {{this.allUsers.length}} </ion-title>
-  </ion-toolbar>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-title>Users ~ {{this.allUsers.length}} </ion-title>
+        </ion-buttons>
+        <ion-buttons slot="start">
+          <ion-button 
+            [ngClass]="this.filterOption == 'date' ? 'active-filter-button' : 'filter-button' " 
+            (click)="filterByDate()">
+            Date
+            <ion-icon *ngIf="this.filterDateAsc" slot="start" name="arrow-up-outline"></ion-icon>
+            <ion-icon *ngIf="this.filterDateDes" slot="start" name="arrow-down-outline"></ion-icon>
+          </ion-button>
+          <ion-button 
+            [ngClass]="this.filterOption == 'name' ? 'active-filter-button' : 'filter-button' " 
+            (click)="filterByName()">
+            Name
+            <ion-icon *ngIf="this.filterNameAsc" slot="start" name="arrow-up-outline"></ion-icon>
+            <ion-icon *ngIf="this.filterNameDes" slot="start" name="arrow-down-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-accordion-group #userAccordianGroup>
+
+  <!-- Skeleton UI Mobile -->
+<div *ngIf="this.skeletonData">
+  <div class="ion-padding custom-skeleton">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>
+          <h3>
+            <ion-skeleton-text class="is-square" animated></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</div>
+
+  <ion-accordion-group *ngIf="!this.skeletonData" #userAccordianGroup>
     <ion-accordion *ngFor="let user of allUsers" class="user-wrapper" value="{{user._id}}">
     <ion-item slot="header">
       <ion-label>
-        <p class="user-name">{{user.fullName}}</p>
+        <p class="user-name">
+          <img class="profile-icon" src="../../../assets/icons/profile-icon.svg" alt="" srcset="">
+          {{user.fullName}}</p>
         <p class="user-email">{{user.email}}</p>
       </ion-label>
     </ion-item>
@@ -22,7 +75,7 @@
         </ion-label>
         <ion-label>
           <h2>Date Registered</h2>
-          <p class="product-rating">{{user.dateRegistered}}</p>
+          <p class="product-rating">{{user.formattedDate}}</p>
         </ion-label>
         <!-- <ion-label>
           <h2>Products Bought?</h2>

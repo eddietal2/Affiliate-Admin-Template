@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { LandingPageService } from 'src/app/services/landing-page/landing-page.service';
@@ -22,11 +22,13 @@ export class LandingPagePage implements OnInit {
 
   constructor(
     private landingPageService: LandingPageService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    public changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
     this.getLandingPageInfo();
+    this.triggerSkeletonView();
   }
 
   @HostListener('unloaded')
@@ -34,11 +36,31 @@ export class LandingPagePage implements OnInit {
     this.getLandingPageInfoSub.unsubscribe();
   }
 
+  skeletonData = true;
+
+  /**
+   * Trigger Skeleton UI
+   */
+   triggerSkeletonView() {
+    setTimeout(() => {
+      this.skeletonData = false;
+      this.changeDetectorRef.detectChanges();
+    }, 2000);
+
+    return;
+  }
 
 
   getLandingPageInfoSub: Subscription;
   landingPageInfo: LandingPageInfo;
-  landingPageInfo$ = new BehaviorSubject(['']);
+  landingPageInfo$ = new BehaviorSubject({
+    _id: '',
+    welcomeMessage: '',
+    sample: '',
+    featuredProducts: [],
+    whyHypnosis: '',
+    membershipMessage: '',
+  });
   id: string;
 
   /**

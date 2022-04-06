@@ -7,11 +7,26 @@
         --background: #555;
         --color: #fff;
     }
-    .user-title {
-        color: #fff; 
+    .user-name {
+        font-size: 1.3em;
+        color: #fff;
+
+        .profile-icon {
+            height: 30px;
+            position: relative;
+            top: 2px;
+        }
     }
     .user-email {
         color: #999; 
     }
 
+}
+
+.active-filter-button {
+    --background: #bc9947;
+}
+
+.filter-button {
+    --background: #999;
 }

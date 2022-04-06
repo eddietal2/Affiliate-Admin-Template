@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-settings',
@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    public changeDetectorRef: ChangeDetectorRef,
+  ) { }
 
   ngOnInit() {
+    this.triggerSkeletonView();
+  }
+
+  skeletonData = true;
+
+  /**
+   * Trigger Skeleton UI
+   */
+   triggerSkeletonView() {
+    setTimeout(() => {
+      this.skeletonData = false;
+      this.changeDetectorRef.detectChanges();
+    }, 2000);
+
+    return;
   }
 
 }

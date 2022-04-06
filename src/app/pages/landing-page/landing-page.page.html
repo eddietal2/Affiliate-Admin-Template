@@ -6,7 +6,40 @@
 
 <ion-content>
 
-  <!-- Header -->
+  <!-- Skeleton UI Mobile -->
+<div *ngIf="this.skeletonData">
+  <div class="ion-padding custom-skeleton">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>
+          <h3>
+            <ion-skeleton-text class="is-square" animated></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</div>
+
+  <div *ngIf="!this.skeletonData">
+    <!-- Header -->
   <ion-row class="ion-justify-content-center">
     <ion-col size="11">
       <h1>Header</h1>
@@ -151,5 +184,6 @@
   <div class="spacer-5x"></div>
   <div class="spacer-5x"></div>
   <div class="spacer-5x"></div>
+  </div>
 
 </ion-content>

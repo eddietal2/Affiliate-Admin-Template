@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -17,13 +17,13 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
   allProducts$ = new BehaviorSubject([]);
   allProducts = [];
 
-
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngAfterViewInit() {
@@ -35,12 +35,28 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
     this.createFormGroups();
     this.getAllProducts();
     this.checkToggled();
+    this.triggerSkeletonView();
 
   }
 
   @HostListener('unloaded')
   ngOnDestroy() {
     console.log('Products Page destroyed');
+  }
+
+
+  skeletonData = true;
+
+  /**
+   * Trigger Skeleton UI
+   */
+   triggerSkeletonView() {
+    setTimeout(() => {
+      this.skeletonData = false;
+      this.changeDetectorRef.detectChanges();
+    }, 2000);
+
+    return;
   }
 
 
@@ -85,9 +101,10 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
         this.allProducts$.next(Object.values(products));
         this.allProducts$.subscribe( async products => {
 
-          // Format Product Dates
+          // Format Product Objects
           await products.forEach((product) => {
-            product.datePosted = formatDistance(
+
+            product.formattedDate = formatDistance(
               product.datePosted,
               Date.now()
             )
@@ -249,7 +266,32 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
 
       // TODO Add Success Toast
       await loading.onDidDismiss().then(async () => {
+         // Format Product Objects
+         await Object.values(products).forEach(product => {
+
+          product.formattedDate =  formatDistance(
+            product.datePosted,
+            Date.now()
+          )
+
+          // Add isOpen property for modals.
+          product.isOpen = false;
+
+          // Add Product Sample Icon for each product
+          product.buttonIcon = 'play';
+
+          // For Pause / Play Toggle
+          product.sampleToggle = false;
+
+          // Convert Sample time to 0 - 1 duration
+          product.sampleDuration = 0;
+
+          // Capture sample location when paused
+          product.trackDuration = 0;
+
+        });
         this.allProducts = await Object.values(products);
+
         this.filterOption = 'date';
         await this.allProducts.sort((a, b) => {
           return b.datePosted - a.datePosted;
@@ -303,7 +345,10 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
                 await loading.present();
                 // TODO Add Success Toast
                 await loading.onDidDismiss().then(() => {
-                  return this.allProducts = products['remainingProducts'];
+                  return setTimeout(() => {
+                    this.allProducts = products['remainingProducts'];
+                    this.changeDetectorRef.detectChanges();
+                  }, 0);
                 });
               })
           }
@@ -336,7 +381,6 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
     if(this.filterDateAsc) {
 
       this.allProducts.sort((a, b) => {
-        console.log(a.datePosted);
         
         return b.datePosted - a.datePosted;
       });
@@ -473,7 +517,7 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
 
    }
   
-  toggleFeatured(e: CustomEvent, id, toggleRef) {
+  toggleFeatured(e, id, toggleRef) {
     console.log(e);
     e.preventDefault();
     
@@ -585,7 +629,8 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
           if(product.sampleDuration >= 1) {
             
             product.sampleDuration = 1;
-            product.buttonIcon = 'refresh-outline'
+            product.buttonIcon = 'refresh-outline';
+            product.sampleDuration = 0;
 
             clearInterval(timeInterval);
             sound.stop();

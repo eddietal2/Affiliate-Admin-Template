@@ -53,9 +53,40 @@
 
 <ion-content>
 
+  <!-- Skeleton UI Mobile -->
+<div *ngIf="this.skeletonData">
+  <div class="ion-padding custom-skeleton">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>
+          <h3>
+            <ion-skeleton-text class="is-square" animated></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</div>
 
   <!-- Products -->
-  <ion-accordion-group #productAccordianGroup>
+  <ion-accordion-group *ngIf="!this.skeletonData" #productAccordianGroup>
 
     <ion-accordion *ngFor="let product of allProducts" class="product-wrapper" value="{{product._id}}">
       
@@ -77,8 +108,8 @@
 
         <!-- Date Posted -->
         <ion-buttons slot="end">
-          <p style="width: 200px;">{{product.apiID}} <span class="hr-spacer-3x"></span></p>
-          <p class="date-posted">Posted: {{product.datePosted}} ago</p>
+          <p style="width: 125px; float: right;">{{product.apiID}} <span class="hr-spacer-3x"></span></p>
+          <p class="date-posted">{{product.formattedDate}} ago</p>
         </ion-buttons>
       </ion-item>
       
