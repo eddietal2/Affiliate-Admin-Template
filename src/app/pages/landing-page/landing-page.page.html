@@ -7,157 +7,172 @@
 <ion-content>
 
   <!-- Skeleton UI Mobile -->
-<div *ngIf="this.skeletonData">
-  <div class="ion-padding custom-skeleton">
-    <ion-list>
-      <ion-item lines="none">
-        <ion-label>
-          <h3>
-            <ion-skeleton-text class="is-square" animated></ion-skeleton-text>
-          </h3>
-          <p>
-            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
-          </p>
-          <p>
-            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
-          </p>
-          <p>
-            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
-          <p>
-            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
-          </p>
-          <p>
-            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
-          </p>
-          <p>
-            <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
-          </p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+  <div *ngIf="this.skeletonData">
+    <div class="ion-padding custom-skeleton">
+      <ion-list>
+        <ion-item lines="none">
+          <ion-label>
+            <h3>
+              <ion-skeleton-text class="is-square" animated></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+            <p>
+              <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text class="is-text" animated style="width: 40%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
   </div>
-</div>
 
-  <div *ngIf="!this.skeletonData">
+  <div id="landing-page-wrapper" *ngIf="!this.skeletonData">
+
     <!-- Header -->
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="11">
-      <h1>Header</h1>
+    <ion-row>
+      <ion-col size-xs="12" size-sm="10" size="6">
+        <h1>Header</h1>
 
-      <!-- Welcome Message -->        
-      <ion-spinner *ngIf="welcomeMessageSpinner" name="bubbles"></ion-spinner>
-      <ion-item *ngIf="!welcomeMessageSpinner" lines="none">
-        <ion-label class="landing-page-label">Welcome Message | </ion-label>
-        <ion-input 
-          type="text" 
-          #welcomeMessageInput
-          (ionChange)="welcomeMessageInputEvent($event)"
-          placeholder="Insert Message Here"
-          value="{{this.landingPageInfo$.value.welcomeMessage}}"
-          maxlength="100">
-        </ion-input>
-        <ion-button
-            [disabled]="!disableWelomeMessageInput"
-            [ngClass]="disableWelomeMessageInput ? 'active-edit' : 'inactive-edit'"
-            (click)="editWelcomeMessage(welcomeMessageInput)">
+        <!-- Welcome Message -->        
+        <ion-spinner *ngIf="welcomeMessageSpinner" name="bubbles"></ion-spinner>
+        <ion-item *ngIf="!welcomeMessageSpinner" lines="none">
+          <ion-label class="landing-page-label">Welcome Message | </ion-label>
+          <ion-input 
+            type="text" 
+            #welcomeMessageInput
+            (ionChange)="welcomeMessageInputEvent($event)"
+            placeholder="Insert Message Here"
+            value="{{this.landingPageInfo$.value.welcomeMessage}}"
+            maxlength="100">
+          </ion-input>
+          <ion-button
+              [disabled]="!disableWelomeMessageInput"
+              [ngClass]="disableWelomeMessageInput ? 'active-edit' : 'inactive-edit'"
+              (click)="editWelcomeMessage(welcomeMessageInput)">
+              Edit
+          </ion-button>
+          <ion-button
+              #cancelEditWelcomeButton
+              *ngIf="disableWelomeMessageInput"
+              class="close-button"
+              (click)="cancelEditWelcomeMessage(welcomeMessageInput, cancelEditWelcomeButton)">
+              <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <!-- Sample Track -->
+        <ion-spinner *ngIf="sampleSpinner" name="bubbles"></ion-spinner>
+        <ion-item *ngIf="!sampleSpinner" lines="none">
+          <ion-label class="landing-page-label">Sample Track | </ion-label>
+          <ion-input 
+            type="text" 
+            #sample
+            placeholder="Insert Message Here"
+            (ionChange)="sampleInputEvent($event)"
+            value="{{this.landingPageInfo$.value.sample}}"
+            maxlength="100"></ion-input>
+            <ion-button 
+              #editSampleButton
+              [disabled]="!disableSampleInput"
+              [ngClass]="disableSampleInput ? 'active-edit' : 'inactive-edit'"
+              (click)="editSample(sample)">
+              Edit
+            </ion-button>
+            <ion-button
+                #cancelEditSampleButton
+                *ngIf="disableSampleInput"
+                class="close-button"
+                (click)="cancelEditSample(sample)">
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+
+        <!-- Current Track -->
+        <ion-item style="--background: none;" lines="none">
+          <ion-label color="dark">Current Track - {{this.landingPageInfo$.value.sample}}</ion-label>
+        </ion-item>
+
+
+      </ion-col>
+    </ion-row>
+    <div class="spacer-5x"></div>
+
+    <!-- Featured Products -->
+    <ion-row>
+      <ion-col size-xs="12" size-md="10" size-lg="6">
+        <h1>Featured Products</h1>
+        <ion-button 
+          [ngClass]="disableSampleInput ? 'active-edit' : 'inactive-edit'"
+          (click)="editFeaturedProducts()">
             Edit
         </ion-button>
-        <ion-button
-            #cancelEditWelcomeButton
-            *ngIf="disableWelomeMessageInput"
-            class="close-button"
-            (click)="cancelEditWelcomeMessage(welcomeMessageInput, cancelEditWelcomeButton)">
-            <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-xs="12" size-md="8" size-lg="4">
 
-      <!-- Sample Track -->
-      <ion-spinner *ngIf="sampleSpinner" name="bubbles"></ion-spinner>
-      <ion-item *ngIf="!sampleSpinner" lines="none">
-        <ion-label class="landing-page-label">Sample Track | </ion-label>
-        <ion-input 
-          type="text" 
-          #sample
-          placeholder="Insert Message Here"
-          (ionChange)="sampleInputEvent($event)"
-          value="{{this.landingPageInfo$.value.sample}}"
-          maxlength="100"></ion-input>
-          <ion-button 
-            #editSampleButton
-            [disabled]="!disableSampleInput"
-            [ngClass]="disableSampleInput ? 'active-edit' : 'inactive-edit'"
-            (click)="editSample(sample)">
+        <ion-reorder-group id="reorder">
+          <ion-item *ngFor="let featuredProduct of this.featuredProducts">
+            <ion-label> {{featuredProduct.title}} </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
+        </ion-reorder-group>
+
+      </ion-col>
+    </ion-row>
+    <div class="spacer-10x"></div>
+
+    <!-- Description -->
+    <div style="margin-left: 2em; position: relative; top: 20px;">
+        <ion-spinner *ngIf="descriptionSpinner" name="bubbles"></ion-spinner>
+    </div>
+    <ion-row>
+      <ion-col size-xs="12" size-sm="10" size-lg="6" *ngIf="!descriptionSpinner">
+        <h1>Description</h1>
+        <ion-button 
+            [disabled]="!disableDescriptionInput"
+            [ngClass]="disableDescriptionInput ? 'active-edit' : 'inactive-edit'"
+            (click)="editDescription(descriptionInput)">
             Edit
           </ion-button>
           <ion-button
-              #cancelEditSampleButton
-              *ngIf="disableSampleInput"
+              #cancelEditDescriptionButton
+              *ngIf="disableDescriptionInput"
               class="close-button"
-              (click)="cancelEditSample(sample)">
-              <ion-icon name="close-outline"></ion-icon>
+              (click)="cancelEditDescription(descriptionInput)">
+              Cancel
           </ion-button>
-      </ion-item>
 
-      <!-- Current Track -->
-      <ion-item style="--background: none;" lines="none">
-        <ion-label color="dark">Current Track - [{{this.landingPageInfo$.value.sample}}]</ion-label>
-      </ion-item>
+        <ion-textarea 
+          #descriptionInput
+          (ionChange)="descriptionInputEvent($event)"
+          rows="8" 
+          value="{{this.landingPageInfo$.value.description}}">
+        </ion-textarea>
+      </ion-col>
+      <div class="spacer-5x"></div>
+    </ion-row>
+    <div class="spacer-10x"></div>
 
-
-    </ion-col>
-  </ion-row>
-
-  <!-- Featured Products -->
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="11">
-      <h1>Featured Products
-        <ion-button 
-        [ngClass]="disableSampleInput ? 'active-edit' : 'inactive-edit'"
-        (click)="editFeaturedProducts()">
-          Edit
-        </ion-button>
-      </h1>
-    </ion-col>
-  </ion-row>
-
-  <!-- Why Hypnosis? -->
-  <div style="margin-left: 2em; position: relative; top: 20px;">
-      <ion-spinner *ngIf="whyHypnosisSpinner" name="bubbles"></ion-spinner>
-  </div>
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="11" *ngIf="!whyHypnosisSpinner">
-      <h1>Description
-        <ion-button 
-          [disabled]="!disableWhyHypnosisInput"
-          [ngClass]="disableWhyHypnosisInput ? 'active-edit' : 'inactive-edit'"
-          (click)="editWhyHypnosis(whyHypnosisInput)">
-          Edit
-        </ion-button>
-        <ion-button
-            #cancelEditWhyHypnosisButton
-            *ngIf="disableWhyHypnosisInput"
-            class="close-button"
-            (click)="cancelEditWhyHypnosis(whyHypnosisInput)">
-            <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
-      </h1>
-
-      <ion-textarea 
-        #whyHypnosisInput
-        (ionChange)="whyHypnosisInputEvent($event)"
-        rows="8" 
-        value="{{this.landingPageInfo$.value.whyHypnosis}}">
-      </ion-textarea>
-    </ion-col>
-  </ion-row>
-
-  <!-- Membership -->
-  <div style="margin-left: 2em; position: relative; top: 20px;">
-    <ion-spinner *ngIf="membershipMessageSpinner" name="bubbles"></ion-spinner>
-  </div>
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="11" *ngIf="!membershipMessageSpinner">
-      <h1>Membership
+    <!-- Membership -->
+    <div style="margin-left: 2em; position: relative; top: 20px;">
+      <ion-spinner *ngIf="membershipMessageSpinner" name="bubbles"></ion-spinner>
+    </div>
+    <ion-row>
+      <ion-col size-xs="12" size-sm="10" size-lg="6" *ngIf="!membershipMessageSpinner">
+        <h1>Membership</h1>
         <ion-button 
         [disabled]="!disableMembershipMessageInput"
         [ngClass]="disableMembershipMessageInput ? 'active-edit' : 'inactive-edit'"
@@ -169,21 +184,21 @@
             *ngIf="disableMembershipMessageInput"
             class="close-button"
             (click)="cancelEditMembershipMessage(membershipMessageInput)">
-            <ion-icon name="close-outline"></ion-icon>
-        </ion-button></h1>
-      <ion-textarea 
-        #membershipMessageInput
-        (ionChange)="membershipMessageInputEvent($event)"
-        rows="8" 
-        value="{{this.landingPageInfo$.value.membershipMessage}}">
-        
-      </ion-textarea>
-    </ion-col>
-  </ion-row>
+            Cancel
+        </ion-button>
+        <ion-textarea 
+          #membershipMessageInput
+          (ionChange)="membershipMessageInputEvent($event)"
+          rows="8" 
+          value="{{this.landingPageInfo$.value.membershipMessage}}">
+          
+        </ion-textarea>
+      </ion-col>
+      <div class="spacer-5x"></div>
+    </ion-row>
 
-  <div class="spacer-5x"></div>
-  <div class="spacer-5x"></div>
-  <div class="spacer-5x"></div>
+    <div class="spacer-10x"></div>
+    <div class="spacer-10x"></div>
   </div>
 
 </ion-content>

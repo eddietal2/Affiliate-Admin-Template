@@ -2,13 +2,15 @@ import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/cor
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { LandingPageService } from 'src/app/services/landing-page/landing-page.service';
+import { ProductsService } from 'src/app/services/products/products.service';
+
 
 interface LandingPageInfo {
   _id: string,
   welcomeMessage: string,
   sample: string,
   featuredProducts: Array<String>,
-  whyHypnosis: string,
+  description: string,
   membershipMessage: string,
 }
 
@@ -18,10 +20,13 @@ interface LandingPageInfo {
   styleUrls: ['./landing-page.page.scss'],
 })
 export class LandingPagePage implements OnInit {
+  getFeaturedProductsSub: Subscription;
+  featuredProducts: any;
 
 
   constructor(
     private landingPageService: LandingPageService,
+    private productsService: ProductsService,
     private alertController: AlertController,
     public changeDetectorRef: ChangeDetectorRef,
   ) { }
@@ -29,11 +34,13 @@ export class LandingPagePage implements OnInit {
   ngOnInit() {
     this.getLandingPageInfo();
     this.triggerSkeletonView();
+    
   }
 
   @HostListener('unloaded')
   ngOnDestroy() {
     this.getLandingPageInfoSub.unsubscribe();
+    this.skeletonData = true;
   }
 
   skeletonData = true;
@@ -53,27 +60,45 @@ export class LandingPagePage implements OnInit {
 
   getLandingPageInfoSub: Subscription;
   landingPageInfo: LandingPageInfo;
-  landingPageInfo$ = new BehaviorSubject({
-    _id: '',
-    welcomeMessage: '',
-    sample: '',
-    featuredProducts: [],
-    whyHypnosis: '',
-    membershipMessage: '',
-  });
+  landingPageInfo$ = new BehaviorSubject([]);
   id: string;
 
   /**
    * Get Landing Page Information 
    */
   getLandingPageInfo() {
-    this.getLandingPageInfoSub = this.landingPageService.getAllProducts()
+    this.getLandingPageInfoSub = this.landingPageService.getLandingPageInfo()
       .subscribe((info) => {
-
         this.landingPageInfo$.next(info['landingPageInfo'][0]);
+        this.featuredProducts = info['landingPageInfo'][0].featuredProducts;
         this.id = info['landingPageInfo'][0]._id;
+        this.productsService.getAllProducts().subscribe(
+          products => {
+
+            this.featuredProducts = Object.values(products)
+            .filter(item => this.featuredProducts.includes(item._id));
+            
+            console.log(Object.values(products));
+            console.log(this.featuredProducts); 
+          }
+        )
+        
+        return;
       })
   }
+
+  // getFeaturedProducts() {
+  //   this.getFeaturedProductsSub = this.landingPageService.getAllProducts()
+  //     .subscribe((info) => {
+  //       console.log(info);
+        
+  //       this.landingPageInfo$.next(info['landingPageInfo'][0]);
+  //       this.id = info['landingPageInfo'][0]._id;
+  //     })
+  // }
+
+  disableWelomeMessageInput = false;
+  welcomeMessageSpinner = false;
 
   /**
    * Track the Input of Welcome Message Input
@@ -89,8 +114,6 @@ export class LandingPagePage implements OnInit {
    
   }
 
-  disableWelomeMessageInput = false;
-  welcomeMessageSpinner = false;
   /**
    * 
    */
@@ -129,7 +152,8 @@ export class LandingPagePage implements OnInit {
 
 
                 setTimeout(() => {
-                  this.welcomeMessageSpinner = false;    
+                  this.welcomeMessageSpinner = false;
+                  //  this.changeDetectorRef.detectChanges();  
                 }, 800);
 
               })
@@ -210,7 +234,8 @@ export class LandingPagePage implements OnInit {
 
 
                setTimeout(() => {
-                 this.sampleSpinner = false;    
+                 this.sampleSpinner = false;
+                  // this.changeDetectorRef.detectChanges();    
                }, 800);
 
              })
@@ -237,37 +262,32 @@ export class LandingPagePage implements OnInit {
     
   }
 
-  /**
-   * 
-   */
-  async editFeaturedProducts() {
-     console.log();
-     
-   }
-
    /**
     * Track the Input of Welcome Message Input
     */
-   whyHypnosisInputCount = 0;
-   whyHypnosisInputEvent(e: Event) {
-    this.whyHypnosisInputCount++;
+   descriptionInputCount = 0;
+   descriptionInputEvent(e: Event) {
+     console.log(e);
+     console.log(this.disableDescriptionInput);
+     
+    this.descriptionInputCount++;
  
-    if(this.whyHypnosisInputCount > 0) {
-      this.disableWhyHypnosisInput = true;
+    if(this.descriptionInputCount > 0) {
+      return this.disableDescriptionInput = true;
     }
     // console.log(e);
     
    }
  
-   disableWhyHypnosisInput = false;
-   whyHypnosisSpinner = false;
+   disableDescriptionInput = false;
+   descriptionSpinner = false;
   /**
    * 
    */
-  async editWhyHypnosis(input) {
+  async editDescription(input) {
     const alert = await this.alertController.create({
       cssClass: 'edit-landing-page-alert',
-      header: 'Edit Why Hypnosis',
+      header: 'Edit Description',
       message: 'Are you sure?',
       buttons: [
         {
@@ -283,22 +303,14 @@ export class LandingPagePage implements OnInit {
           cssClass: 'confirm-button',
           handler: () => {
             console.log('Confirm Okay');
-            this.whyHypnosisSpinner = true;
-            this.landingPageService.editWhyHypnosisHTTP(this.id, input.value)
+            this.descriptionSpinner = true;
+            this.landingPageService.editDescriptionHTTP(this.id, input.value)
              .subscribe((updatedLandingPageInfo: any) => {
 
                this.landingPageInfo$.next(updatedLandingPageInfo);
-               this.whyHypnosisInputCount = 0;
-               this.disableWhyHypnosisInput = false;
-               
-               console.log(updatedLandingPageInfo);
-               console.log(this.landingPageInfo$.value);
-               console.log(input.value);
+               this.disableDescriptionInput = false;
+               this.descriptionSpinner = false; 
 
-
-               setTimeout(() => {
-                 this.whyHypnosisSpinner = false;    
-               }, 800);
 
              })
           }
@@ -315,17 +327,15 @@ export class LandingPagePage implements OnInit {
     * @param input 
     * @param button 
     */
-   async cancelEditWhyHypnosis(input) {
+   async cancelEditDescription(input) {
      console.log(input);
      console.log(this.landingPageInfo$.value);
-     input.value = this.landingPageInfo$.value['whyHypnosis'];
+     input.value = this.landingPageInfo$.value['description'];
      setTimeout(() => {
-      this.disableWhyHypnosisInput = false;
+      this.disableDescriptionInput = false;
      }, 0);
      
    }
-
-  
 
    /**
     * Track the Input of Welcome Message Input
@@ -365,7 +375,6 @@ export class LandingPagePage implements OnInit {
           cssClass: 'confirm-button',
           handler: () => {
             console.log('Confirm Okay');
-            this.membershipMessageSpinner = true;
             this.landingPageService.editMembershipHTTP(this.id, input.value)
              .subscribe((updatedLandingPageInfo: any) => {
 
@@ -376,13 +385,13 @@ export class LandingPagePage implements OnInit {
                console.log(updatedLandingPageInfo);
                console.log(this.landingPageInfo$.value);
                console.log(input.value);
-
-
-               setTimeout(() => {
-                 this.membershipMessageSpinner = false;    
-               }, 800);
-
+               this.membershipMessageSpinner = true;
              })
+
+
+            //  setTimeout(() => {
+            //   this.membershipMessageSpinner = false;
+            //  }, 0);
           }
         }
       ]

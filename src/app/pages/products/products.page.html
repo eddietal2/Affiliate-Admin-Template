@@ -100,6 +100,7 @@
               <span class="product-price">${{product.price}}</span>
               {{product.title}}</p>
             <span class="product-category">#{{product.category}}</span>
+            <span *ngIf="product.featured" class="product-featured">| Featured</span>
             <span class="hr-spacer-1x"></span>
             <!-- <app-ratings-stars *ngIf="product.rating > 0" [rating]="product.rating"></app-ratings-stars> -->
             <span *ngIf="product.rating == undefined || null" class="product-rating">| None</span>
@@ -140,8 +141,8 @@
             Delete
             </ion-button>
             <span style="margin-left: 8px; font-size: 1.3em;">   | Featured?</span>
-            <ion-toggle #toggleRef *ngIf="!product.featured" (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
-            <ion-toggle #toggleRef *ngIf="product.featured" checked (ionChange)="toggleFeatured($event, product._id, toggleRef)"></ion-toggle>
+            <ion-toggle #toggleRef *ngIf="!product.featured" (ionChange)="toggleFeatured($event, product, toggleRef)"></ion-toggle>
+            <ion-toggle #toggleRef *ngIf="product.featured" checked (ionChange)="toggleFeatured($event, product, toggleRef)"></ion-toggle>
 
             
           </ion-buttons>
@@ -213,7 +214,6 @@
         <div class="spacer-5x"></div>
         <div style="border-top: 1px solid #999;"></div>
       </ion-list>
-
 
       <!-- Edit Product Modal -->
       <ion-modal [backdropDismiss]="false" [isOpen]="product.isOpen">

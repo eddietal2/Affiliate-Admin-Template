@@ -14,7 +14,7 @@ export class LandingPageService {
     /**
      * Get Landing Page Info HTTP Request
      */
-    getAllProducts() {
+    getLandingPageInfo() {
       return this.http.get(`${this.BACKEND_URL}/landing-page/get-landing-page-info`)
     }
 
@@ -35,8 +35,8 @@ export class LandingPageService {
     /**
      * Edit Why Hypnosis HTTP Request
      */
-     editWhyHypnosisHTTP(id: string, input: string) {
-      return this.http.post(`${this.BACKEND_URL}/landing-page/edit-why-hypnosis`, {id: id, newWhyHypnosis: input})
+     editDescriptionHTTP(id: string, input: string) {
+      return this.http.post(`${this.BACKEND_URL}/landing-page/edit-description`, {id: id, newDescription: input})
     }
 
     /**

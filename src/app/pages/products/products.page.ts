@@ -517,7 +517,7 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
 
    }
   
-  toggleFeatured(e, id, toggleRef) {
+  toggleFeatured(e, product, toggleRef) {
     console.log(e);
     e.preventDefault();
     
@@ -526,12 +526,12 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
     // Set Product to Featured
     if(eventDetail) {
       console.log('Featured.');
-      this.productsService.featureProduct(id)
+      this.productsService.featureProduct(product._id)
       .pipe(
         catchError(e => {
           if(e.error.msg = 'There are already 3 Featured Products') {
             console.log(toggleRef);
-            toggleRef.el.checked = false;
+            product.featured = false;
             this.errorToast(); 
             
           }
@@ -547,6 +547,8 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
             duration: 2000
         });
         toast.present();
+
+        product.featured = !product.featured;
         });
       
     }
@@ -554,9 +556,9 @@ export class ProductsPage implements OnInit, AfterViewInit, OnDestroy {
     // Set Product to Unfeatured
     if(!eventDetail) {
       console.log('Unfeatured.');
-      this.productsService.unfeatureProduct(id)
+      this.productsService.unfeatureProduct(product._id)
         .subscribe(async res => {
-       
+          product.featured = !product.featured;
         });
       
     }

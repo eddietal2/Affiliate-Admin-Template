@@ -1,5 +1,5 @@
 h1 {
-    margin-top: 2em;
+    display: inline-block;
 }
 
 ion-item {
@@ -18,6 +18,9 @@ ion-textarea {
     padding: 0.6em;
 }
 
+#landing-page-wrapper {
+    padding: 1em 2em;
+}
 
 .landing-page-edit-button {
     display: inline-block;
@@ -30,12 +33,23 @@ ion-textarea {
 
 .active-edit {
     --background: #00c400;
+    display: inline;
+    float: right;
+    width: 80px;
 }
 .inactive-edit {
     --background: #999;
+    display: inline;
+    float: right;
+    position: relative;
+    top: 16px;
+    width: 80px;
 }
 
 .close-button {
-    --background: #999;
+    --background: #f63f3f;
+    display: inline;
+    float: right;
+    width: 80px;
 }
 
