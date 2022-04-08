@@ -60,7 +60,7 @@ export class LandingPagePage implements OnInit {
 
   getLandingPageInfoSub: Subscription;
   landingPageInfo: LandingPageInfo;
-  landingPageInfo$ = new BehaviorSubject([]);
+  landingPageInfo$ = new BehaviorSubject({} as LandingPageInfo);
   id: string;
 
   /**
@@ -411,6 +411,11 @@ export class LandingPagePage implements OnInit {
      setTimeout(() => {
       this.disableMembershipMessageInput = false;
      }, 0);
+     
+   }
+
+   editFeaturedProducts() {
+     console.log('');
      
    }
 
